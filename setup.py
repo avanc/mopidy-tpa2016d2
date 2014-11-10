@@ -12,13 +12,13 @@ def get_version(filename):
 
 
 setup(
-    name='Mopidy-Yamaha',
-    version=get_version('mopidy_yamaha/__init__.py'),
-    url='https://github.com/knutz3n/mopidy-yamaha',
+    name='Mopidy-TPA2016D2',
+    version=get_version('mopidy_tpa2016d2/__init__.py'),
+    url='',
     license='Apache License, Version 2.0',
-    author='Johannes Knutsen',
-    author_email='johannes@knutsen.me',
-    description='Mopidy extension for controlling volume on Yamaha receivers',
+    author='Sven Klomp',
+    author_email='mail@klomp.eu',
+    description='Mopidy extension for controlling volume on TPA2016D2 amplifier',
     long_description=open('README.rst').read(),
     packages=find_packages(exclude=['tests', 'tests.*']),
     zip_safe=False,
@@ -27,24 +27,10 @@ setup(
         'setuptools',
         'Mopidy >= 0.19',
         'Pykka >= 1.1',
-        'xmltodict >= 0.8.5',
-    ],
-    test_suite='nose.collector',
-    tests_require=[
-        'nose',
-        'mock >= 1.0',
     ],
     entry_points={
         'mopidy.ext': [
-            'yamaha = mopidy_yamaha:Extension',
+            'tpa2016d2 = mopidy_tpa2016d2:Extension',
         ],
     },
-    classifiers=[
-        'Environment :: No Input/Output (Daemon)',
-        'Intended Audience :: End Users/Desktop',
-        'License :: OSI Approved :: Apache Software License',
-        'Operating System :: OS Independent',
-        'Programming Language :: Python :: 2',
-        'Topic :: Multimedia :: Sound/Audio :: Players',
-    ],
 )

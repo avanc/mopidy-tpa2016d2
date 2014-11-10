@@ -1,8 +1,4 @@
-include .coveragerc
-include .travis.yml
 include LICENSE
 include MANIFEST.in
 include README.rst
-include mopidy_yamaha/ext.conf
-
-recursive-include tests *.py
+include mopidy_tpa2016d2/ext.conf

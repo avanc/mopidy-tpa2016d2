@@ -5,12 +5,12 @@ import os
 from mopidy import config, ext
 
 
-__version__ = '0.2.5'
+__version__ = '0.0.1'
 
 
 class Extension(ext.Extension):
-    dist_name = 'Mopidy-Yamaha'
-    ext_name = 'yamaha'
+    dist_name = 'Mopidy-TPA2016D2'
+    ext_name = 'tpa2016d2'
     version = __version__
 
     def get_default_config(self):
@@ -19,12 +19,10 @@ class Extension(ext.Extension):
 
     def get_config_schema(self):
         schema = super(Extension, self).get_config_schema()
-        schema['host'] = config.String()
-        schema['source'] = config.String(optional=True)
-        schema['party_mode'] = config.Boolean(optional=True)
+        schema['i2c_bus'] = config.Integer()
         return schema
 
     def setup(self, registry):
-        from .mixer import YamahaMixer
+        from .mixer import TPA2016D2Mixer
 
-        registry.add('mixer', YamahaMixer)
+        registry.add('mixer', TPA2016D2Mixer)
