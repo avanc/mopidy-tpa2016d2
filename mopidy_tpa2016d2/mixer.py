@@ -41,3 +41,6 @@ class TPA2016D2Mixer(pykka.ThreadingActor, mixer.Mixer):
 
     def on_start(self):
         self._tpa2016d2_talker = talker.TPA2016D2Talker.start(i2c_bus=self.i2c_bus).proxy()
+
+    def on_stop(self):
+        self._tpa2016d2_talker.stop()
