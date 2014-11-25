@@ -44,19 +44,24 @@ class TPA2016D2Talker(pykka.ThreadingActor):
     def _set_device_to_known_state(self):
         self.mute(False)
 
-    def mute(self, mute):
+    def mute(self, mute=None):
         data = self.bus.read_byte_data(self.address, SETUP)
         
-        if (mute):
-            data &= ~SETUP_SPK_EN_L
-            data &= ~SETUP_SPK_EN_R
+        if (mute is None):
+            mute = not (data & (SETUP_SPK_EN_L|SETUP_SPK_EN_R))
         else:
-            data |= SETUP_SPK_EN_L
-            data |= SETUP_SPK_EN_R
+            if (mute):
+                data &= ~SETUP_SPK_EN_L
+                data &= ~SETUP_SPK_EN_R
+            else:
+                data |= SETUP_SPK_EN_L
+                data |= SETUP_SPK_EN_R
+            self.bus.write_byte_data(self.address, SETUP, data)
+            
+        return mute
         
-        self.bus.write_byte_data(self.address, SETUP, data)
 
-    def get_volume(self):
+    def _get_volume(self):
         volume = self.bus.read_byte_data(self.address, GAIN)
         if (volume>31):
             volume = - ((volume^63)+1)
@@ -64,13 +69,13 @@ class TPA2016D2Talker(pykka.ThreadingActor):
             (volume - self._min_volume)
             / float(self._max_volume - self._min_volume)
             ) * 100
-        logger.info(
+        logger.debug(
             'TDA2016D2 amplifier: Volume is "%d" (%d%%)',
             volume, percentage_volume)
         return percentage_volume
 
 
-    def set_volume(self, percentage_volume):
+    def _set_volume(self, percentage_volume):
         volume = ( percentage_volume / 100.0 * (self._max_volume-self._min_volume)
             ) + self._min_volume
         volume = int(round(volume))
@@ -84,3 +89,14 @@ class TPA2016D2Talker(pykka.ThreadingActor):
         self.bus.write_byte_data(self.address, GAIN, volume)
 
         return True
+
+    def volume(self, volume=None):
+        if (volume is None):
+            volume = self._get_volume()
+        else:
+            self._set_volume(volume)
+        
+        return volume
+       
+       
+        
