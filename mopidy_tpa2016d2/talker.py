@@ -65,10 +65,10 @@ class TPA2016D2Talker(pykka.ThreadingActor):
         volume = self.bus.read_byte_data(self.address, GAIN)
         if (volume>31):
             volume = - ((volume^63)+1)
-        percentage_volume = (
+        percentage_volume = int( round( (
             (volume - self._min_volume)
             / float(self._max_volume - self._min_volume)
-            ) * 100
+            ) * 100 ) )
         logger.debug(
             'TDA2016D2 amplifier: Volume is "%d" (%d%%)',
             volume, percentage_volume)
