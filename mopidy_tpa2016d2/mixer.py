@@ -31,6 +31,7 @@ class TPA2016D2Mixer(pykka.ThreadingActor, mixer.Mixer):
     def set_volume(self, volume):
         self._tpa2016d2_talker.volume(volume)
         self.trigger_volume_changed(volume)
+        return True # ToDo: Status should be checked
 
     def get_mute(self):
         return self._tpa2016d2_talker.mute().get()
@@ -38,6 +39,7 @@ class TPA2016D2Mixer(pykka.ThreadingActor, mixer.Mixer):
     def set_mute(self, mute):
         self._tpa2016d2_talker.mute(mute)
         self.trigger_mute_changed(mute)
+        # ToDo: Status should be checked
 
     def on_start(self):
         self._tpa2016d2_talker = talker.TPA2016D2Talker.start(i2c_bus=self.i2c_bus).proxy()
